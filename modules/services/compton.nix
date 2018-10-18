@@ -298,6 +298,11 @@ in {
           WantedBy = [ "graphical-session.target" ];
         };
 
+        # Temporarily fixes corrupt colours with Mesa 18
+        environment = mkIf (cfg.backend == "glx") {
+          allow_rgb10_configs = "false";
+        };
+
         Service = {
           ExecStart = "${cfg.package}/bin/compton --config ${configFile}";
           Restart = "always";
